@@ -1,4 +1,4 @@
-from telegram import Update, ReplyKeyboardMarkup
+from telegram import Update
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -7,20 +7,17 @@ from telegram.ext import (
     filters,
 )
 
-# Import command handler from handlers folder
 from handlers.start import start_handler
 
-# Replace with your actual bot token
 BOT_TOKEN = "8585594114:AAHwDuRtq1fyhNa_ntNF0-9NNMyI7EliTEA"
 
 
 async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
+    text = update.message.text.strip()
 
     if text == "Get Started":
         await update.message.reply_text(
-            "🚀 Welcome! I help businesses generate high-quality leads and grow faster.\n\n"
-            "Use the menu below to explore our services or contact support."
+            "🚀 Welcome! I'm here to help you generate and manage leads efficiently."
         )
 
     elif text == "Services":
@@ -28,34 +25,21 @@ async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "🛠 Our Services:\n\n"
             "• Lead Generation\n"
             "• Email Marketing\n"
-            "• Shopify Store Development\n"
-            "• Sales Funnel Setup\n"
-            "• Business Growth Strategy"
+            "• Shopify Store Setup\n"
+            "• Sales Funnel Creation"
         )
 
     elif text == "Contact Admin":
         await update.message.reply_text(
-            "📩 Contact Admin:\n"
-            "@Gupcupp\n\n"
-            "We typically respond as quickly as possible."
-        )
-
-    else:
-        await update.message.reply_text(
-            "Please choose an option from the menu below."
+            "📩 Contact Admin:\n@Gupcupp"
         )
 
 
 def main():
     app = Application.builder().token(BOT_TOKEN).build()
 
-    # Command handlers
     app.add_handler(start_handler)
-
-    # Button handler
-    app.add_handler(
-        MessageHandler(filters.TEXT & ~filters.COMMAND, handle_buttons)
-    )
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_buttons))
 
     print("Bot is running...")
     app.run_polling()
