@@ -1,21 +1,22 @@
-from aiogram import Router, F
-from aiogram.types import Message
+from telegram import Update, ReplyKeyboardMarkup
+from telegram.ext import CommandHandler, ContextTypes
 
-router = Router()
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        ["Get Started"],
+        ["Services"],
+        ["Contact Admin"]
+    ]
 
-@router.message(F.text == "Get Started")
-async def get_started(message: Message):
-    await message.answer("Let's get started! Please share your business name.")
-
-@router.message(F.text == "Services")
-async def services(message: Message):
-    await message.answer(
-        "We offer:\n"
-        "• Lead Generation\n"
-        "• Customer Acquisition\n"
-        "• Marketing Automation"
+    reply_markup = ReplyKeyboardMarkup(
+        keyboard,
+        resize_keyboard=True
     )
 
-@router.message(F.text == "Contact Admin")
-async def contact_admin(message: Message):
-    await message.answer("Contact our admin: @Gupcupp")
+    await update.message.reply_text(
+        "Welcome to my Lead Generation Bot! 🚀\n\n"
+        "Choose an option below:",
+        reply_markup=reply_markup
+    )
+
+start_handler = CommandHandler("start", start)
